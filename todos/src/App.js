@@ -78,7 +78,10 @@ event.target.innerHTML="completed";
        pathname: '/completedTodos',
        state: {completeArray: this.state.completedArray}
      }}>see completed todos</Link></Button>
-     <Button color="danger"><Link to='/notCompletedTodos'>see not completed todos</Link></Button>
+     <Button color="danger"><Link to={{
+       pathname: '/notCompletedTodos',
+       state: {todoArray: this.state.todoArray}
+     }}>see not completed todos</Link></Button>
 
      <Switch>
   <Route path='/completedTodos' component={CompletedTodos} />
