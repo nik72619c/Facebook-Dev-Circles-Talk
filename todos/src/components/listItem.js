@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert} from 'reactstrap';
+import {Alert,Button} from 'reactstrap';
 export default class ListItem extends React.Component{
 
     constructor(props){
@@ -8,7 +8,10 @@ export default class ListItem extends React.Component{
     }
     render(){
         return (
-            <Alert color="primary" className="w-75">{this.props.val}</Alert>
+            <div>
+                <Alert color="primary" className="w-75">{this.props.val}<Button color="success" onClick={this.props.Complete}>complete</Button></Alert>
+                
+            </div>
         )
     }
 }

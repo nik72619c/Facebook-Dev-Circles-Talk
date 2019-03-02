@@ -1,7 +1,8 @@
 import React from 'react';
 
 const CompletedTodos=(props)=>{
-    return (<div>complted Todos here</div>);
+
+    return (<div>completed Todos here</div>);
 }
 
 export default CompletedTodos;
