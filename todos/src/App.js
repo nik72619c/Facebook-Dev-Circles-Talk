@@ -59,13 +59,12 @@ event.target.innerHTML="completed";
   render() {
     return (
 
-      <div id="id">
-
-        <FormGroup className="w-75 pl-2">
-          <Label for="exampleAddress">Todos</Label>
-          <input  type="text" name="address" id="exampleAddress" placeholder="What are you gonna do today ?" ref="myref" />
-        </FormGroup>
-      <Button onClick={this.add}>Add</Button>
+      <div id="id" className="bg bg-light h-100">
+            <h1 className="text-center bg bg-secondary">TODOS APP</h1>
+        <div className="w-100 p-2">
+          <input  type="text" className="px-auto w-75 mx-auto" name="address" id="exampleAddress" placeholder="What are you gonna do today ?" ref="myref" />
+        </div>
+      <Button onClick={this.add} className="m-2">Add</Button>
 {
   this.state.todoArray.map((todoElement,index)=>{
 
@@ -74,11 +73,11 @@ event.target.innerHTML="completed";
 }
 
  
-     <Button color="danger"> <Link to={{
+     <Button color="danger" className="m-2"> <Link to={{
        pathname: '/completedTodos',
        state: {completeArray: this.state.completedArray}
      }}>see completed todos</Link></Button>
-     <Button color="danger"><Link to={{
+     <Button color="danger" className="m-2"><Link to={{
        pathname: '/notCompletedTodos',
        state: {todoArray: this.state.todoArray}
      }}>see not completed todos</Link></Button>
