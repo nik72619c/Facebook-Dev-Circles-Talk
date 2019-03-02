@@ -33,23 +33,26 @@ class App extends Component {
     });
    
   }
-  Complete(event){
-    console.log('received', event.target.parentNode);
+  Complete(event,value){
+    
+   console.log('event', value);
     let completeArray=[];
-      this.state.todoArray.forEach(element=>{
 
-        if(element.isCompleted){
-          completeArray.push(element);
-        }
-
-      });
-      this.setState({
-        completedArray: completeArray
-      });
-      // event.target.parentNode.setAttribute("color","success");
-      event.target.disabled=true;
-      alert('congrats you completed this task...');
+    this.state.todoArray.forEach(element=>{
+      if(element.todo==value){
+        element.isCompleted=true;
+        this.state.completedArray.push(element);
+        this.setState({
+          todoArray: this.todosArray,
+          completedArray: this.state.completedArray
+        });
+      }
+    });
      
+    console.log('state array now', this.state.todoArray);
+event.target.disabled=true;
+event.target.innerHTML="completed";
+    
   }
 
 
@@ -64,16 +67,16 @@ class App extends Component {
         </FormGroup>
       <Button onClick={this.add}>Add</Button>
 {
-  this.state.todoArray.map(todoElement=>{
+  this.state.todoArray.map((todoElement,index)=>{
 
-  return <Suspense fallback={<div>loading...</div>}><ListItem val={todoElement.todo} Complete={this.Complete} /> </Suspense>
+  return <Suspense fallback={<div>loading...</div>}><ListItem val={todoElement.todo} Complete={this.Complete} key={index} ref={index}/> </Suspense>
 })
 }
 
  
      <Button color="danger"> <Link to={{
        pathname: '/completedTodos',
-       state: {}
+       state: {completeArray: this.state.completedArray}
      }}>see completed todos</Link></Button>
      <Button color="danger"><Link to='/notCompletedTodos'>see not completed todos</Link></Button>
 
