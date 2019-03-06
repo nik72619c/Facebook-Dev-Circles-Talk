@@ -1,9 +1,12 @@
 import React, { Component,Suspense,lazy } from 'react';
 import {Input,FormGroup,Label,Button} from 'reactstrap';
 import './App.css';
-import CompletedTodos from './components/CompletedTodos';
-import NotCompletedTodos from './components/NotCompletedTodos';
 import {Switch,Route,Link} from 'react-router-dom';
+// import CompletedTodos from './components/CompletedTodos';
+const CompletedTodos= lazy(()=>import('./components/CompletedTodos'));
+// import NotCompletedTodos from './components/NotCompletedTodos';
+
+const NotCompletedTodos= lazy(()=> import('./components/NotCompletedTodos'));
 // import ListItem from './components/listItem';
 var ListItem=lazy(()=>import('./components/listItem'));
 class App extends Component {
@@ -83,8 +86,8 @@ event.target.innerHTML="completed";
      }}>see not completed todos</Link></Button>
 
      <Switch>
-  <Route path='/completedTodos' component={CompletedTodos} />
-  <Route path='/notCompletedTodos' component={NotCompletedTodos}/>
+  <Route path='/completedTodos' render={()=><Suspense fallback={<div>loading your completed todos...</div>}><CompletedTodos completeArray={this.state.completedArray}/></Suspense>} />
+  <Route path='/notCompletedTodos' render={()=><Suspense fallback={<div>loading your incomplete todos...</div>}><NotCompletedTodos todoArray={this.state.todoArray}/></Suspense>}/>
   <Route/>
 </Switch>
       </div>
