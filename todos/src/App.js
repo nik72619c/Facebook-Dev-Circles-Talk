@@ -1,10 +1,10 @@
 import React, { Component,Suspense,lazy, unstable_Profiler as Profiler } from 'react';
-
-import {Input,FormGroup,Label,Button} from 'reactstrap';
+import {FixedSizeList as List} from 'react-window';
+import {Button} from 'reactstrap';
 import './App.css';
 import {Switch,Route,Link} from 'react-router-dom';
+// import memoize from 'memoize-one';
 
-import { render } from "react-dom";
 import { unstable_trace as trace } from "scheduler/tracing";
 // import CompletedTodos from './components/CompletedTodos';
 const CompletedTodos= lazy(()=>import('./components/CompletedTodos'));
@@ -13,6 +13,15 @@ const CompletedTodos= lazy(()=>import('./components/CompletedTodos'));
 const NotCompletedTodos= lazy(()=> import('./components/NotCompletedTodos'));
 // import ListItem from './components/listItem';
 var ListItem=lazy(()=>import('./components/listItem'));
+
+const Row = ({ index, style }) => (
+  <div style={style}>Row {index}</div>
+);
+
+const createItemData = (items, func) => ({
+  items,
+  func,
+});
 class App extends Component {
 
   constructor(){
@@ -22,12 +31,14 @@ class App extends Component {
       todoArray: [],
       completedArray: []
     };
+   
+   
 
     this.add=this.add.bind(this);
     this.Complete= this. Complete.bind(this);
 
     this.logProfiler=this.logProfiler.bind(this);
-    this.profileChange=this.profileChange.bind(this);
+    
  
   }
 
@@ -51,11 +62,11 @@ class App extends Component {
        BaseTime,
         Interactions,
          phase,
-   })
+   });
   }
 
-  profileChange(){
-   
+  componentDidMount(){
+    
   }
 
   add(){
@@ -69,17 +80,18 @@ class App extends Component {
     this.setState({
       todoArray: this.todosArray
     });
-    trace("button trigger ", performance.now(), ()=>{
-      console.log('profiled...');
-      this.setState({
-        todoArray:  []
-      })
-    });
+    // trace("button trigger ", performance.now(), ()=>{
+    //   console.log('profiled...');
+    //   this.setState({
+    //     todoArray:  []
+    //   })
+    // });
   }
+ 
+   
   Complete(event,value){
     
    console.log('event', value);
-    let completeArray=[];
 
     this.state.todoArray.forEach(element=>{
       if(element.todo==value){
@@ -111,13 +123,24 @@ event.target.innerHTML="completed";
         </div>
       <Button color="success" onClick={this.add} className="m-2">Add</Button>
 {
-  this.state.todoArray.map((todoElement,index)=>{
+//   this.state.todoArray.map((todoElement,index)=>{
 
-  return <Suspense fallback={<div>loading...</div>}>
-  <ListItem val={todoElement.todo} Complete={this.Complete} key={index} ref={index}/>
-   </Suspense>
-})
+//   return <Suspense fallback={<div>loading...</div>}>
+//   <ListItem val={todoElement.todo} Complete={this.Complete} key={index} ref={index}/>
+//    </Suspense>
+// })
 }
+<Suspense fallback={<div>loading.....</div>}>
+  <List
+    height={150}
+    itemCount={this.state.todoArray.length}
+    itemSize={35}
+    width={300}
+    itemData={createItemData(this.state.todoArray, this.Complete)}
+  >
+    {ListItem}
+  </List>
+  </Suspense>
 
  
      <Button color="warning" className="m-2"> <Link to={{
