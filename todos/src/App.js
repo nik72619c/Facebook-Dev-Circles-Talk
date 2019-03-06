@@ -1,7 +1,11 @@
-import React, { Component,Suspense,lazy } from 'react';
+import React, { Component,Suspense,lazy, unstable_Profiler as Profiler } from 'react';
+
 import {Input,FormGroup,Label,Button} from 'reactstrap';
 import './App.css';
 import {Switch,Route,Link} from 'react-router-dom';
+
+import { render } from "react-dom";
+import { unstable_trace as trace } from "scheduler/tracing";
 // import CompletedTodos from './components/CompletedTodos';
 const CompletedTodos= lazy(()=>import('./components/CompletedTodos'));
 // import NotCompletedTodos from './components/NotCompletedTodos';
@@ -21,10 +25,41 @@ class App extends Component {
 
     this.add=this.add.bind(this);
     this.Complete= this. Complete.bind(this);
+
+    this.logProfiler=this.logProfiler.bind(this);
+    this.profileChange=this.profileChange.bind(this);
  
   }
 
+  //code for interaction API
+//   checkInitialrender(){
+// trace("check state change", performance.now(), ()=>{
+//    this.setState({todoArray: []});
+// });
+  // }
+
+  // componentDidUpdate(){
+  //   this.checkInitialrender();
+  // }
+
+  logProfiler(profilerId, phase, actualTime, BaseTime, startTime, Committime, Interactions){
+   console.log({
+     profilerId,
+     actualTime,
+     startTime,
+      Committime,
+       BaseTime,
+        Interactions,
+         phase,
+   })
+  }
+
+  profileChange(){
+   
+  }
+
   add(){
+  
     let todo=this.refs.myref.value;
     console.log(this.refs.myref.nodeValue);
     this.todosArray.push({
@@ -34,7 +69,12 @@ class App extends Component {
     this.setState({
       todoArray: this.todosArray
     });
-   
+    trace("button trigger ", performance.now(), ()=>{
+      console.log('profiled...');
+      this.setState({
+        todoArray:  []
+      })
+    });
   }
   Complete(event,value){
     
@@ -50,37 +90,41 @@ class App extends Component {
           completedArray: this.state.completedArray
         });
       }
+      
     });
      
     console.log('state array now', this.state.todoArray);
 event.target.disabled=true;
 event.target.innerHTML="completed";
+
     
   }
 
 
   render() {
     return (
-
+<Profiler id="log-profiler" onRender={this.logProfiler}>
       <div id="id" className="bg bg-light h-100">
             <h1 className="text-center bg bg-secondary">TODOS APP</h1>
         <div className="w-100 p-2">
           <input  type="text" className="px-auto w-75 mx-auto" name="address" id="exampleAddress" placeholder="What are you gonna do today ?" ref="myref" />
         </div>
-      <Button onClick={this.add} className="m-2">Add</Button>
+      <Button color="success" onClick={this.add} className="m-2">Add</Button>
 {
   this.state.todoArray.map((todoElement,index)=>{
 
-  return <Suspense fallback={<div>loading...</div>}><ListItem val={todoElement.todo} Complete={this.Complete} key={index} ref={index}/> </Suspense>
+  return <Suspense fallback={<div>loading...</div>}>
+  <ListItem val={todoElement.todo} Complete={this.Complete} key={index} ref={index}/>
+   </Suspense>
 })
 }
 
  
-     <Button color="danger" className="m-2"> <Link to={{
+     <Button color="warning" className="m-2"> <Link to={{
        pathname: '/completedTodos',
        state: {completeArray: this.state.completedArray}
      }}>see completed todos</Link></Button>
-     <Button color="danger" className="m-2"><Link to={{
+     <Button color="warning" className="m-2"><Link to={{
        pathname: '/notCompletedTodos',
        state: {todoArray: this.state.todoArray}
      }}>see not completed todos</Link></Button>
@@ -91,6 +135,7 @@ event.target.innerHTML="completed";
   <Route/>
 </Switch>
       </div>
+      </Profiler>
 
     );
   }
