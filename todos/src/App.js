@@ -3,7 +3,7 @@ import {FixedSizeList as List} from 'react-window';
 import {Button} from 'reactstrap';
 import './App.css';
 import {Switch,Route,Link} from 'react-router-dom';
-// import memoize from 'memoize-one';
+import memoize from 'memoize-one';
 
 import { unstable_trace as trace } from "scheduler/tracing";
 // import CompletedTodos from './components/CompletedTodos';
@@ -14,14 +14,10 @@ const NotCompletedTodos= lazy(()=> import('./components/NotCompletedTodos'));
 // import ListItem from './components/listItem';
 var ListItem=lazy(()=>import('./components/listItem'));
 
-const Row = ({ index, style }) => (
-  <div style={style}>Row {index}</div>
-);
-
-const createItemData = (items, func) => ({
+const createItemData = memoize((items, func) => ({
   items,
   func,
-});
+}));
 class App extends Component {
 
   constructor(){
@@ -63,10 +59,6 @@ class App extends Component {
         Interactions,
          phase,
    });
-  }
-
-  componentDidMount(){
-    
   }
 
   add(){
@@ -132,7 +124,7 @@ event.target.innerHTML="completed";
 }
 <Suspense fallback={<div>loading.....</div>}>
   <List
-    height={150}
+    height={300}
     itemCount={this.state.todoArray.length}
     itemSize={35}
     width={300}
