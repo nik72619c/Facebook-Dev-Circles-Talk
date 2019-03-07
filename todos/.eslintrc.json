@@ -1,9 +1,11 @@
 {
     "env": {
+        "es6":     true,
         "browser": true,
-        "es6": true
+        "node":    true,
+        "mocha":   true
     },
-    "extends": "eslint:recommended",
+    "extends": ["eslint:recommended","plugin:react/recommended"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -12,12 +14,16 @@
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 2018,
+        "esversion": 2018,
         "sourceType": "module"
     },
     "plugins": [
         "react"
     ],
     "rules": {
+        "react/jsx-uses-react": "error",   
+        "react/jsx-uses-vars":
+        "error" ,
+        "no-unused-vars": [0]
     }
 }

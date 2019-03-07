@@ -17,7 +17,7 @@ var ListItem=lazy(()=>import('./components/listItem'));
 const createItemData = memoize((items, func) => ({
   items,
   func,
-}));
+}))
 class App extends Component {
 
   constructor(){
