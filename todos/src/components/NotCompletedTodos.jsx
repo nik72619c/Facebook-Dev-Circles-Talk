@@ -6,6 +6,7 @@ const NotCompletedTodos=(props)=>{
         return <div className="w-75"><Alert color="success">No incomplete tasks</Alert></div>;
        
     }
+    
 
     else{
         return (<div className="w-75">

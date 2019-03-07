@@ -123,10 +123,10 @@ event.target.innerHTML="completed";
 // })
 }
 <Suspense fallback={<div>loading.....</div>}>
-  <List
-    height={300}
+  <List className="m-2 p-2"
+    height={150}
     itemCount={this.state.todoArray.length}
-    itemSize={35}
+    itemSize={80}
     width={300}
     itemData={createItemData(this.state.todoArray, this.Complete)}
   >

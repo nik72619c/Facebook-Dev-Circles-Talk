@@ -24,6 +24,8 @@
         "react/jsx-uses-react": "error",   
         "react/jsx-uses-vars":
         "error" ,
-        "no-unused-vars": [0]
+        "no-unused-vars": [0],
+        "react/prop-types": [0],
+        "no-console": [0]
     }
 }

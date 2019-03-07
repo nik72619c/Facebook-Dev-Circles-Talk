@@ -9,10 +9,13 @@ const CompletedTodos=(props)=>{
     }
 
     else{
-        return (<div className="w-75">
+        return (<div className="w-75"  style={{
+            height: '100px',
+            overflowY: 'scroll'
+        }}>
         {
           props.completeArray.map((element,index)=>{
-                return <Alert color="success">{element.todo}</Alert>
+                return <Alert color="success" key={index}>{element.todo}</Alert>
             })
         }
     </div>);
@@ -22,3 +25,4 @@ const CompletedTodos=(props)=>{
 }
 
 export default CompletedTodos;
+//<img src="http://www.chochoscambridge.com/wp-content/uploads/parser/flower-bouquet-emoji-1.png"></img>
